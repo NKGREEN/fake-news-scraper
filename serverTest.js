@@ -1,20 +1,27 @@
 
 var express = require("express");
 var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
 var path = require("path");
 var methodOverride = require("method-override");
-var models = require("./models/models.js");
+var Breit = require("./models/models.js");
 var controller = require("./controllers/controller.js")
 
 var cheerio = require("cheerio");
 var request = require("request");
 
 var defaultPath = path.join(__dirname, '/');
-
+mongoose.Promise = Promise;
 // Sets up the Express App
 // =============================================================
 var app = express();
 
+// Use morgan and body parser with our app
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 // Include methods to configure routes
 // Override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
@@ -46,16 +53,29 @@ app.get("/", function(request, response) {
 });
 
 
-/*var databaseUrl = "fakeNews";
+var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
 
-var db = mongojs(databaseUrl, collections);
+//var db = mongojs(databaseUrl, collections);
+
+
+// Database configuration with mongoose
+//mongoose.connect("mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7");
+mongoose.connect("mongodb://localhost/fakeNews");
+var db = mongoose.connection;
+
 db.on("error", function(error) {
   console.log("Database Error:", error);
-});*/
+});
+
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
+
 
 // First, tell the console what server3.js is doing
-console.log("\n******************************************\n" +
+/*console.log("\n******************************************\n" +
             "Look at the image of every award winner in \n" +
             "one of the pages of awwwards.com. Then,\n" +
             "grab the image's source URL." +
@@ -79,7 +99,7 @@ request("http://www.breitbart.com/big-government/", function(error, response, ht
      *    Then, .attr grabs the imgs src value.
      * So: <figure>  ->  <a>  ->  <img src="link">  ->  "link"  */
    // var imgLink = $(element).find("a").find("img").attr("src");
-    var url = $(element).children().attr('href');
+    /*var url = $(element).children().attr('href');
     console.log(url);
     var title =  $(element).children().attr('title');
     var imgUrl = $(element).children().children().attr('src')
@@ -95,7 +115,50 @@ request("http://www.breitbart.com/big-government/", function(error, response, ht
   /*app.post('/articles', function(error, doc) {
     var newBreit = new Breitbart;
   })*/
-});
+/*
+*/
+
+  app.get("/scrape", function(req, res) {
+                        
+                        // Make request to grab the HTML from awwards's clean website section
+                        request("http://www.breitbart.com/big-government/", function(error, response, html) {
+
+                            // Load the HTML into cheerio
+                            const $ = cheerio.load(html);
+
+                            // Make an empty array for saving our scraped info
+                            //var results = [];
+
+                            // With cheerio, look at each award-winning site, enclosed in "figure" tags with the class name "site"
+                            $("article.has-post-thumbnail").each(function(i, element) {
+                                var result = {};
+
+                                result.title = $(this).children().attr('title');
+                                result.excerpt = $(this).children().next().children().next().text();
+                                result.url = $(this).children().attr('href');
+                                result.imgUrl = $(this).children().children().attr('src');
+
+                                var entry = new Breit(result)
+
+                                entry.save(function(err, doc) {
+                                        if (err) {
+                                            console.log(err)
+                                        } else {
+                                            console.log(doc)
+                                        }
+                                    })
+
+                               
+                               })
+                            });
+                         console.log('redirected')
+                                res.redirect('/');
+
+                        });
+
+
+
+
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 
