@@ -16,7 +16,7 @@
 		{{this.excerpt}}
 		</div>
 		<div class="row">
-		<a href=savedArticles class="btn btn-danger articleBtn" data-id={{this._id}}>Add Note</a>
+		<a href=savedArticles class="btn btn-danger savedArticleBtn" data-id={{this._id}} onclick=modal('show')>Add Note</a>
 		</div>
 		<br>
 		<br>
@@ -25,10 +25,27 @@
 	<div class="col-md-2">
 	</div>
 </div>
-
 	
 <br>
 
 {{/each}}
-
+<div class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="noteTitle" class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="notes" class="modal-body">
+      
+      </div>
+      <div class="modal-footer">
+        <a type="sumbit" class="btn btn-primary">Save changes</a>
+        <a type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
