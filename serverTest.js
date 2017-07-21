@@ -64,6 +64,7 @@ var db = "mongodb://localhost/fakeNews" || process.env.MONGODB_URI;
 // Database configuration with mongoose
 //mongoose.connect("mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7");
 mongoose.connect(db, function (error) {
+  useMongoClient: true
   if (error) {
     console.log(error)
   }
