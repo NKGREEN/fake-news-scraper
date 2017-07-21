@@ -5,7 +5,8 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var path = require("path");
 var methodOverride = require("method-override");
-var Breit = require("./models/models.js");
+var Breitbart = require("./models/articles.js");
+var Comment = require("./models/comment.js");
 var controller = require("./controllers/controller.js")
 
 var cheerio = require("cheerio");
@@ -50,6 +51,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.get("/", function(request, response) {
     
     response.render("index");
+
 });
 
 
@@ -134,11 +136,11 @@ request("http://www.breitbart.com/big-government/", function(error, response, ht
                                 var result = {};
 
                                 result.title = $(this).children().attr('title');
-                                result.excerpt = $(this).children().next().children().next().text();
+                                result.excerpt = $(this).children().next().children('.excerpt').text().trim();
                                 result.url = $(this).children().attr('href');
                                 result.imgUrl = $(this).children().children().attr('src');
 
-                                var entry = new Breit(result)
+                                var entry = new Breitbart(result)
 
                                 entry.save(function(err, doc) {
                                         if (err) {
@@ -162,4 +164,48 @@ request("http://www.breitbart.com/big-government/", function(error, response, ht
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 
+});
+
+app.get('/allArticles', function (req, res) {
+  Breitbart.find({})
+    .populate("comment")
+    .exec(function (error, doc) {
+      if (error) {
+        console.log(error)
+      }
+      else {
+        var data = {
+            articles: doc
+        };
+        res.render("index", data);
+      }
+    })
+});
+
+app.get('/allArticles/:id', function(req, res) {
+    Breitbart.findOneAndUpdate({"_id": req.params.id}, {"saved": true}) 
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        res.redirect('/allArticles')
+      }
+    })
+})
+
+app.get('/savedArticles', function (req, res) {
+  Breitbart.find({"saved": true})
+    .populate("comment")
+    .exec(function (error, doc) {
+      if (error) {
+        console.log(error)
+      }
+      else {
+        var data = {
+            articles: doc
+        };
+        res.render("saved", data);
+      }
+    })
 });

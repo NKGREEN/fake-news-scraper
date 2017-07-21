@@ -1,47 +1,12 @@
 var express = require("express");
-var Breit = require('../models/models.js')
+var Breit = require('../models/articles.js')
 
 
 var app = express();
 
 //router.get('/scrape', function(req, res) {
 
-            app.get("/scrape", function(req, res) {
-                        
-                        // Make request to grab the HTML from awwards's clean website section
-                        request("http://www.breitbart.com/big-government/", function(error, response, html) {
-
-                            // Load the HTML into cheerio
-                            /*var $ = cheerio.load(html);
-
-                            // Make an empty array for saving our scraped info
-                            var results = [];*/
-
-                            // With cheerio, look at each award-winning site, enclosed in "figure" tags with the class name "site"
-                            $("article.has-post-thumbnail").each(function(i, element) {
-                                var result = {};
-
-                                result.title = $(this).children().attr('title');
-                                result.excerpt = $(this).children().next().children().next().text();
-                                result.url = $(this).children().attr('href');
-                                result.imgUrl = $(this).children().children().attr('src');
-
-                                var entry = new Breit(result)
-
-                                entry.save(function(err, doc) {
-                                        if (err) {
-                                            console.log(err)
-                                        } else {
-                                            console.log(doc)
-                                        }
-                                    })
-
-                                console.log('redirected')
-                                res.redirect('/');
-
-                           		 })
-                            });
-                        });
+          
 
                                     /* Cheerio's find method will "find" the first matching child element in a parent.
                                      *    We start at the current element, then "find" its first child a-tag.

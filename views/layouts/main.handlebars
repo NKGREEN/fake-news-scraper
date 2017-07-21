@@ -2,10 +2,44 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-		<link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/css/style.css" type="text/css"/>
 		<title>New Scraper</title>
 	</head>
 	<body>
+		<nav class="navbar navbar-custom">
+    <div class="navbar-header">
+	    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+        	<li class="active">
+                
+                    <input type="hidden" name="home" value="">
+                    <a href="/" type="submit">HOME</a>
+                
+            </li>
+            <li>
+                
+                    <input type="hidden" name="scrape" value="">
+                    <a href="/scrape" type="submit">SCRAPE</a>
+                
+            </li>
+            <li>
+                
+                    <input type="hidden" name="savedArticles" value="">
+                    <a href="/savedArticles" type="submit">SAVED ARTICLES</a>
+                
+            </li>
+            <li>
+                
+                    <input type="hidden" name="allArticles" value="">
+                    <a href="/allArticles" type="submit">ALL ARTICLES</a>
+                
+            </li>
+        </ul>
+        </div>
+    </div>
+</nav>
 		{{{ body }}}
+		
 	</body>
 </html>

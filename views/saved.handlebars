@@ -1,8 +1,6 @@
-
-
 <div class="articles">
 {{#each articles}}
-{{#unless this.saved}}
+
 <div class="row">
 	<div class="col-md-2">
 	</div>
@@ -18,7 +16,7 @@
 		{{this.excerpt}}
 		</div>
 		<div class="row">
-		<a href=allArticles/{{this.id}} class="btn btn-primary articleBtn" data-id={{this._id}}>Save Article</a>
+		<a href=savedArticles class="btn btn-danger articleBtn" data-id={{this._id}}>Add Note</a>
 		</div>
 		<br>
 		<br>
@@ -30,8 +28,7 @@
 
 	
 <br>
-{{/unless}}
+
 {{/each}}
 
 </div>
-
