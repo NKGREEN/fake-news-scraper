@@ -50,7 +50,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get("/", function(request, response) {
     
-    response.render("index");
+    response.render("home");
 
 });
 
@@ -58,22 +58,29 @@ app.get("/", function(request, response) {
 var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
 
-//var db = mongojs(databaseUrl, collections);
+var db = "mongodb://localhost/fakeNews" || process.env.MONGODB_URI;
 
 
 // Database configuration with mongoose
 //mongoose.connect("mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7");
-mongoose.connect("mongodb://localhost/fakeNews");
-var db = mongoose.connection;
+mongoose.connect(db, function (error) {
+  if (error) {
+    console.log(error)
+  }
+  else {
+    console.log('Success!')
+  }
+})
 
-db.on("error", function(error) {
+
+/*db.on("error", function(error) {
   console.log("Database Error:", error);
 });
 
 // Once logged in to the db through mongoose, log a success message
 db.once("open", function() {
   console.log("Mongoose connection successful.");
-});
+});*/
 
 
 // First, tell the console what server3.js is doing
@@ -210,4 +217,4 @@ app.get('/savedArticles', function (req, res) {
     })
 });
 
-app.post("/saved")
+//app.post("/saved")
