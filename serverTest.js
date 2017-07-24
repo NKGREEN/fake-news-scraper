@@ -171,10 +171,7 @@ request("http://www.breitbart.com/big-government/", function(error, response, ht
 
 
 
-app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
 
-});
 
 app.get('/allArticles', function (req, res) {
   Breitbart.find({})
@@ -220,4 +217,8 @@ app.get('/savedArticles', function (req, res) {
     })
 });
 
+app.listen(app.get('port'), function() {
+    console.log('Node app is running on port', app.get('port'));
+
+});
 //app.post("/saved")
