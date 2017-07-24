@@ -23,7 +23,7 @@ var app = express();
 
 var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
-
+var PORT = process.env.PORT || 3000;
 var db = 'mongodb://localhost/fakeNews' || process.env.MONGODB_URI  || "mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7";
 
 
@@ -51,7 +51,7 @@ app.use(methodOverride("_method"));
 
 
 // Heroku will set the port via an environment variable
-app.set('port', (process.env.PORT || 3000));
+
 
 // Serve static content for the app from the "public" directory
 app.use(express.static(defaultPath + "public"));
@@ -220,8 +220,8 @@ app.get('/savedArticles', function (req, res) {
     })
 });
 
-app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
+app.listen(PORT, function() {
+    console.log('Node app is running on port ' + PORT);
 
 });
 //app.post("/saved")
