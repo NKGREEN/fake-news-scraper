@@ -64,6 +64,7 @@ mongoose.connect(db, function (error) {
     console.log('Success!')
   }
 })
+
 app.listen(PORT, function() {
     console.log('Node app is running on port ' + PORT);
 
