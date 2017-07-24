@@ -1,6 +1,9 @@
 
 var express = require("express");
+var exphbs = require("express-handlebars");
 var bodyParser = require("body-parser");
+var request = require("request");
+var cheerio = require("cheerio");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var path = require("path");
@@ -9,8 +12,8 @@ var Breitbart = require("./models/articles.js");
 var Comment = require("./models/comment.js");
 var controller = require("./controllers/controller.js")
 
-var cheerio = require("cheerio");
-var request = require("request");
+
+
 
 var defaultPath = path.join(__dirname, '/');
 mongoose.Promise = Promise;
@@ -21,7 +24,8 @@ var app = express();
 var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
 
-var db = "mongodb://localhost/fakeNews" || process.env.MONGODB_URI;
+var db = "mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7" || 
+    'mongodb://localhost/fakeNews';
 
 
 // Database configuration with mongoose
@@ -45,7 +49,7 @@ app.use(bodyParser.urlencoded({
 // Include methods to configure routes
 // Override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
-var exphbs = require("express-handlebars");
+
 
 // Heroku will set the port via an environment variable
 app.set('port', (process.env.PORT || 3000));
