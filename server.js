@@ -24,8 +24,7 @@ var app = express();
 var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
 
-var db = "mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7" || 
-    'mongodb://localhost/fakeNews';
+var db = 'mongodb://localhost/fakeNews' || process.env.MONGODB_URI  || "mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7";
 
 
 // Database configuration with mongoose
