@@ -24,7 +24,7 @@ var app = express();
 var databaseUrl = "fakeNews";
 var collections = ["breitbartArticles"];
 var PORT = process.env.PORT || 3000;
-var db = 'mongodb://localhost/fakeNews' || process.env.MONGODB_URI  || "mongodb://heroku_v5h4xlp7:6i5r0co1s3l35s9uelpq37bl8j@ds163672.mlab.com:63672/heroku_v5h4xlp7";
+var db = 'mongodb://localhost/fakeNews' || process.env.MONGODB_URI;
 
 
 // Database configuration with mongoose
@@ -38,7 +38,10 @@ mongoose.connect(db, function (error) {
     console.log('Success!')
   }
 })
+app.listen(PORT, function() {
+    console.log('Node app is running on port ' + PORT);
 
+});
 
 // Use morgan and body parser with our app
 app.use(logger("dev"));
@@ -71,10 +74,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 //apiRoutes.setup(defaultPath, app, data);
 
 
-app.listen(PORT, function() {
-    console.log('Node app is running on port ' + PORT);
 
-});
 
 app.get("/", function(request, response) {
     
